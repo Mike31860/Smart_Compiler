@@ -6,14 +6,7 @@ node "Local" {
     actor user
     interface "CLI-Chat" as SmartChat
 
-    package "SmartTools" {
-        component "Profiler" {
-            [CProfiler]
-            [PythonProfiler]
-            [LLMProfiler]
-        }
-        [Optimizer]
-    }
+    
 
    
     cloud "Ollama" {
@@ -22,6 +15,8 @@ node "Local" {
             [OllamaServer] -> chat_port
         }
     }
+
+   
     
 
     package "SmartCompiler" {
@@ -29,9 +24,29 @@ node "Local" {
         [SmartServer]
         SmartChat - [SmartClient]
         interface "list_tools" as ListTools
+        interface "call_tool" as ServerCallTool
         [SmartClient] ..> () ListTools: use
         ListTools - [SmartServer]
+        [SmartServer] - ServerCallTool
+        [SmartClient] ..> () ServerCallTool: use
 
+    }
+
+     package "SmartTools" {
+        [Optimizer]
+        interface "call_tool" as CallTool
+        CallTool - [ToolScheduler]
+        component "Profiler" {
+            [CProfiler]
+            [PythonProfiler]
+            [LLMProfiler]
+        }
+        interface "call" as CallOptimizer
+        interface "call" as CallProfiler
+        CallOptimizer - [Optimizer]
+        CallProfiler - [Profiler]
+        [ToolScheduler] ..> CallOptimizer : use
+        [ToolScheduler] ..> CallProfiler : use
     }
 
 
@@ -41,9 +56,8 @@ node "Local" {
 
 user -> SmartChat
 [SmartClient] -> chat_port
-
-[SmartServer] -0- [Profiler]
-[SmartServer] -0- [Optimizer]
+[SmartServer] -> chat_port
+[SmartServer] ..> CallTool : use
 
 
 @enduml
