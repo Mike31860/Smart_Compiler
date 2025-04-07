@@ -1,8 +1,7 @@
 # Smart Compiler Infrastructure
 
 This project introduces an agentic approach for high-level 
-and multi-purpose compilers.AI4CI .
-
+and multi-purpose compilers.CI4AI.
 
 # TUTORIALS
 
