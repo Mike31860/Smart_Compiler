@@ -1,0 +1,9 @@
+@startuml
+
+SmartClient -> SmartClient: Initialize
+
+
+
+
+
+@enduml
