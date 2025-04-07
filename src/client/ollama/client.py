@@ -18,6 +18,8 @@ from mcp.client.session import ListRootsFnT
 from mcp.shared.context import RequestContext
 from mcp.types import ListRootsResult, ErrorData, Root
 from pydantic import FileUrl
+from Preparation.preparation import FolderTree
+
 
 load_dotenv()
 
@@ -219,6 +221,9 @@ class OllamaMCPClient(AbstractMCPClient):
 
         return "\n".join(final_text)
 
+
+
+
     async def chat_loop(self):
         """Run an interactive chat loop"""
         logger.debug("\nMCP Client Started!")
@@ -226,7 +231,23 @@ class OllamaMCPClient(AbstractMCPClient):
 
         while True:
             try:
-                query = input("\nQuery: ").strip()
+                folderProject = input("\nPlease provide the folder of your project: ").strip()
+                print("this is the folder project", folderProject)
+                
+                folderTree = FolderTree(folderProject)
+                folderFile = input("\nPlease provide the file you want to analyze: ").strip()
+                foundFile = folderTree.find_file(folderFile)
+                if foundFile is None:
+                    print(f"File '{folderFile}' not found in the project.")
+                    continue
+                print(f"File '{folderFile}' found in the project.")
+                
+                instruction = input("\nWhat do you want to do with the file? (Profile or Optimize): ").strip()
+                
+                query = f"Please {instruction} the file {foundFile['path']}"
+                print(f"Query: {query}")
+                
+                #query = input("\nQuery: ").strip()
 
                 if query.lower() == 'quit':
                     break

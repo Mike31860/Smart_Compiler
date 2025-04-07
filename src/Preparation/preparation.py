@@ -55,17 +55,3 @@ class FolderTree:
 
         return files_list
 
-# Example usage
-if __name__ == '__main__':
-    project_path = '/home/miguel/Desktop/FAST/FASS-Backend-Profiling/FASS-Backend-Profiling'  # Replace with your actual project path
-    folder_tree = FolderTree(project_path)
-
-    print("Folder Tree:")
-    #print(folder_tree.get_tree())
-
-    print("\nFind File 'example.txt':")
-    #print(folder_tree.find_file('api_helper.py'))
-
-    print("\nList all files:")
-    for file in folder_tree.list_files():
-        print(file)
