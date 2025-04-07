@@ -79,7 +79,7 @@ File 'main.c' found in the project.
 
 What do you want to do with the file? (Profile or Optimize): Profile
 ```
-The profile infomration or the optimize C application will be stored in the same folder where the target project is located.
+The profile information or the optimize C application will be stored in the same folder where the target project is located.
 
 
 ### Explanation
