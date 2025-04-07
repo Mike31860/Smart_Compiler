@@ -1,9 +1,49 @@
 @startuml
 
-SmartClient -> SmartClient: Initialize
+skinparam componentStyle uml1
+
+node "Local" {
+    actor user
+    interface "CLI-Chat" as SmartChat
+
+    package "SmartTools" {
+        component "Profiler" {
+            [CProfiler]
+            [PythonProfiler]
+            [LLMProfiler]
+        }
+        [Optimizer]
+    }
+
+   
+    cloud "Ollama" {
+        portin chat_port
+        component "OllamaServer" { 
+            [OllamaServer] -> chat_port
+        }
+    }
+    
+
+    package "SmartCompiler" {
+        [SmartClient]
+        [SmartServer]
+        SmartChat - [SmartClient]
+        interface "list_tools" as ListTools
+        [SmartClient] ..> () ListTools: use
+        ListTools - [SmartServer]
+
+    }
 
 
 
+
+}
+
+user -> SmartChat
+[SmartClient] -> chat_port
+
+[SmartServer] -0- [Profiler]
+[SmartServer] -0- [Optimizer]
 
 
 @enduml
