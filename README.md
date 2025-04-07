@@ -1,111 +1,113 @@
-# Smart Compiler
+# Smart Compiler Infrastructure
 
-This **Smart Compiler** uses AI models and traditional compiler techniques to enhance the performance scalability of **C** programs. By determining the optimal transformations for each section of code, it can profile, optimize, and output new versions of your applications.
+This project introduces an agentic approach for high-level 
+and multi-purpose compilers.AI4CI .
 
----
 
-## 1. Overview
+# TUTORIALS
 
-- **Component Description**:  
-  This compiler framework develops or uses existing AI models to decide what transformations to apply to a given C program. Its goal is to improve performance scalability by analyzing code sections and applying optimizations accordingly.
+This Smart Compiler uses AI models and traditional compiler techniques to enhance the performance scalability of C programs and Python programs. By profiling, and finding approaches for optimizations.
 
+# Sofwate Requirements
+
+## Install the project
+For dependency management and installation, this project uses ```uv```.
+See [Astral Documentation](https://docs.astral.sh/uv) for installing the uv package manager.
+
+
+## Project dependencies
+
+### Packages
+After installing **uv** run: ```uv sync``` for syncing project dependencies.
+
+### Ollama
+To deploy a LLM using ollama first we need to install Ollama by following 
+its [Official Documentation](https://ollama.com).
+
+Once Ollama is installed deploy the Ollama server (if it was not deployed by the installation).
+
+
+
+### Quick Ollama deploy
+1. Serve the Ollama server: ```ollama serve``` (if it is not already deployed).
+2. Create LLM model using the SmartCompiler Modelfile: ```ollama create llama3.1-smart-compiler -f ollama-smart-compiler-Modelfile```.
+3. Run the created LLM: ```ollama run llama3.1-smart-compiler:latest```.
+4. If it opens a chat after running the LLM, just type ```/bye``` to close that chat.
+
+#### Setting up Environment variables
+Set up the environment variables in a ```.env``` file.
+An example of how this file looks like.
+```
+# .env
+OLLAMA_MODEL=llama3.1-smart-compiler:latest
+OLLAMA_HOST=http://localhost:11434
+MCP_SERVER_SCRIPT_PATH=<project_folder>/src/server_main.py
+MCP_SERVER_TRANSPORT=stdio
+MCP_SERVER_HOST=0.0.0.0
+MCP_SERVER_PORT=8000
+MCP_SERVER_TRANSPORT=stdio
+MCP_SERVER_OLLAMA_MODEL=llama3.1:latest
+LOG_LEVEL=INFO # OR DEBUG
+```
+
+Then type : export $(cat .env | xargs)
+
+
+# How-To Guides
+
+## Running the project
+For running the project, once all dependencies and configurations are set, run the following command:
+
+```bash
+python src/main.py
+
+```
+
+Then the smart compiler will ask the user to provide the folder of the project that the user will be working on. Please provide a path example : /home/directory/projectAI
+
+Then the smart compiler will ask which specific file will the smart compiler work on: type the name fo the file, exmaple : api_server.py
+
+Then the smart compiler will ask which specific task to do: Profile or Optimize. Type what you would like to do with the program.
+
+### USE CASE
+```bash
+python src/main.py
+
+Please provide the folder of your project: /home/user/Desktop/SmartCompiler/examples/jacobi-2d
+Please provide the file you want to analyze: main.c
+File 'main.c' found in the project.
+
+What do you want to do with the file? (Profile or Optimize): Profile
+```
+The profile information or the optimize C application will be stored in the same folder where the target project is located.
+
+
+### Explanation
+
+Details about the smart compiler can be found on the following diagramas:
 - **Diagrams**:  
   - [Diagram 1](https://drive.google.com/file/d/1S5gRxw_vizR1XnmbiZnAH1yZnkB8Ep0_/view?usp=drive_link)  
   - [Diagram 2](https://drive.google.com/file/d/1tgCcINlzBUe6A1PCNX6R_ftAnb9WidcA/view?usp=sharing)
 
----
+## References
 
-## 2. Requirements
+To deploy a LLM using ollama first we need to install Ollama by following 
+its [Official Documentation](https://ollama.com)
 
-1. **Standard C libraries** in the runtime environment  
-2. **Java Runtime Environment** (≥ 1.8)  
-3. **gcc** (> 4.5.0, e.g. `gcc/11.2.0`)  
-4. **anaconda/2023.03**  
-5. **cuda/12.1.1**  
-6. **papi/5.4.3**  
-7. **Parot_jdk** or **jdk/17.0.9**  
-8. **Cetus**  
-9. **python3_11**  
+## Acknowledgements
 
-**Input Pre-conditions**: All input programs must be **valid C** programs.
-
----
-
-## 3. Installation
-
-1. **Obtain Source**: Clone or download this repository.  
-2. **Check Dependencies**: Ensure the above requirements (Java, gcc, Python, etc.) are installed and available in your environment.  
-3. **Install or Configure**: If needed, install **Cetus** and any additional environment modules (e.g., `papi`, `cuda`) required for your target system.  
-4. **Edit Environment Variables**: Update `.env` in the project’s root (see [Environment Variables](#5-environment-variables)).  
-5. **Run the Compiler**: Execute `run_all.py` as described below.
-
----
-
-## 4. Usage
-
-### Changing LLM Prompts
-If you want to modify the prompts used by AI/LLMs:
-
-Go to "/current_folder/pcaot/prompts" and Edit these files to adjust how the models interpret or transform your source code.
+National Science Foundation (NSF) funded AI institute for Intelligent Cyberinfrastructure with Computational Learning in the Environment (ICICLE) (OAC 2112606)
 
 
-### Component Run
-1. **CSV Plan**: Create or edit `planning/experiments_plans_caviness_demo.csv` with the following **semicolon-separated** structure:
+## Internal Notes
 
+### To extract Modelfile
 
-- **bench**: Name of the benchmark or test  
-- **#trials**: Number of runs or trials  
-- **DATASET**: Small, Medium, or Large  
-- **parent_folder**: Folder where your target C program is located  
-- **kernel_folder**: Folder containing kernels (if applicable)  
-- **target_source_code**: Filename of the target C application  
-- **binary_placeholder**: Directory where the compiled/optimized binary will be placed  
-- **expected_bin_name**: Name for the output binary
+```ollama show --modelfile llama3.1 > Modelfile```
 
-2. **Run the Script**:
-```bash
-python src/run_all.py planning/experiments_plans_caviness_demo.csv
-```
+### To create from Modelfile
 
-### Component Output
-
-## Component Output
-The output can be:
-1. The optimized version of the target C application **or**  
-2. Profiling information, depending on what the user wants to do.
-
-The output is stored in: /currentPath/kernel_folder/Target_source_code/binary_place/expected_bin_name
-
-The report is stored in: /currentPath/run_all_backup.log
-
-
-## Environment Variables
-The environment variables are located in:
-You must modify the environment variables. For example:
-```bash
-OPENAI_API_URL=
-OPENAI_API_KEY=
-HugginFace_TOKEN=
-HuggingFace_URL= 
-HuggingFace_URL= 
-PCAOT_DIR=
-MONGO_USER=
-MONGO_PASSWORD=
-MONGO_URI=
-MONGO_DB_NAME=
-LOG_LEVEL=
-EXECUTION_ENV='hpc' #or hpc
-INVALIDATE_COMPILATION_CHECKPOINTS="true"
-AOTS_CONFIG_FILE="/currentFile/config/caviness_demo_aots.json"
-
-```
-
-### Thank you for using Smart Compiler!
-For further details, refer to the diagrams linked above, the .env configuration, or contact the project maintainers.
-
-
-
-
+```ollama create llama3.1-tool -f Modelfile```
 
 
 
