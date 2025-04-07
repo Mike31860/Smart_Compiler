@@ -22,7 +22,7 @@ Once Ollama is installed deploy the Ollama server (if it was not deployed by the
 
 ### Quick Ollama deploy
 1. Serve the Ollama server: ```ollama serve``` (if it is not already deployed).
-2. Create LLM model using the SmartCompiler Modelfile: ``` ollama create llama3.1-smart-compiler -f ollama-smart-compiler-Modelfile```.
+2. Create LLM model using the SmartCompiler Modelfile: ```ollama create llama3.1-smart-compiler -f ollama-smart-compiler-Modelfile```.
 3. Run the created LLM: ```ollama run llama3.1-smart-compiler:latest```.
 4. If it opens a chat after running the LLM, just type ```/bye``` to close that chat.
 
