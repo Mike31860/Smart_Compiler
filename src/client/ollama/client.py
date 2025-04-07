@@ -10,6 +10,8 @@ from logging_utils.base_logger import get_logger
 
 from dotenv import load_dotenv
 import os
+import sys
+import pathlib
 
 from mcp.client.session import ListRootsFnT
 
@@ -52,12 +54,31 @@ class OllamaMCPClient(AbstractMCPClient):
         if not (is_python or is_js):
             raise ValueError("Server script must be a .py or .js file")
 
-        command = "python" if is_python else "node"
+        # Get the current Python executable
+        command = sys.executable if is_python else "node"
+        logger.debug(f"module_server_script_path: {server_script_path}")
         logger.debug(f"command server: {command}")
+        
+        # Create environment with proper PYTHONPATH
+        env = os.environ.copy()
+        # if is_python:
+        #     # Get the project root (2 directories up from the current file)
+        #     current_file = pathlib.Path(__file__)
+        #     project_root = str(current_file.parent.parent.parent.parent)
+            
+        #     # Add project root to PYTHONPATH
+        #     if "PYTHONPATH" in env:
+        #         # Use OS-specific path separator
+        #         env["PYTHONPATH"] = f"{project_root}{os.pathsep}{env['PYTHONPATH']}"
+        #     else:
+        #         env["PYTHONPATH"] = project_root
+                
+        #     logger.debug(f"Set PYTHONPATH: {env['PYTHONPATH']}")
+            
         server_params = StdioServerParameters(
             command=command,
             args=[server_script_path],
-            env=None,
+            env=env,
         )
         
 
