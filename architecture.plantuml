@@ -55,8 +55,8 @@ node "Local" {
 }
 
 user -> SmartChat
-[SmartClient] -> chat_port
-[SmartServer] -> chat_port
+[SmartClient] ..> chat_port
+[SmartServer] ..> chat_port
 [SmartServer] ..> CallTool : use
 
 

@@ -33,7 +33,7 @@ An example of how this file looks like.
 # .env
 OLLAMA_MODEL=llama3.1-smart-compiler:latest
 OLLAMA_HOST=http://localhost:11434
-MCP_SERVER_SCRIPT_PATH=<project_folder>/src/server/main.py
+MCP_SERVER_SCRIPT_PATH=<project_folder>/src/server_main.py
 MCP_SERVER_TRANSPORT=stdio
 MCP_SERVER_HOST=0.0.0.0
 MCP_SERVER_PORT=8000
